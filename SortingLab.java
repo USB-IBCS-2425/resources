@@ -42,7 +42,24 @@ class SortingLab {
 	}
 
 	public static ArrayList<Integer> InsertionSort(ArrayList<Integer> a) {
-		return null;
+
+		for (int i=0; i<a.size(); i++) {
+			// compare with the sorted elements.
+			// i amount of sorted elements
+			int elem = a.get(i);
+			for (int j=i; j>0; j--) {
+				// comparison with each sorted element
+				if (elem < a.get(j-1)) {
+					// move element at j-1 up
+					a.set(j, a.get(j-1));
+				}
+				else {
+					a.set(j, elem);
+					break;
+				}
+			}
+		}
+		return a;
 	}
 
 	public static void main(String[] args) {
@@ -50,7 +67,7 @@ class SortingLab {
 		// Create an arraylist of n integers
 		// with random integers from 1 - n
 		ArrayList<Integer> a = new ArrayList<Integer>();
-		int n = 1000;
+		int n = 160000;
 		for (int i = 0; i < n; i++) {
 			int newNum = 1 + (int)(Math.random()*n);
 			a.add(newNum);
@@ -59,13 +76,13 @@ class SortingLab {
 
 		// keep track of the time in nanoseconds
 		long start = System.nanoTime();
-		ArrayList<Integer> b = SelectionSort(a);
+		ArrayList<Integer> b = BubbleSort(a);
 		long end = System.nanoTime();
 		long total = end - start;
 
 		System.out.println(b);
 		
-		System.out.println("Sorted! Took " + total + " nanoseconds");
+		System.out.println("Sorted! Took " + total+ " nanoseconds");
 		
 	}
 }
