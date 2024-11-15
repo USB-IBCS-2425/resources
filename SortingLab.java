@@ -2,7 +2,26 @@ import java.util.*;
 
 class SortingLab {
 
-	public static ArrayList<Integer> BubbleSort(ArrayList<Integer> a) {
+	public static ArrayList<Integer> a;
+	public static int n;
+
+	public SortingLab(int num) {
+		a = new ArrayList<Integer>();
+		n = num;
+		for (int i = 0; i < num; i++) {
+			int newNum = 1 + (int)(Math.random()*num);
+			a.add(newNum);
+		}
+	}
+
+	public void resetList() {
+		for (int i = 0; i < n; i++) {
+			int newNum = 1 + (int)(Math.random()*n);
+			a.set(i, newNum);
+		}
+	}
+
+	public static void BubbleSort() {
 		while (true) {
 			boolean swapped = false;
 			for (int i = 0; i < a.size() - 1; i++) {
@@ -20,10 +39,9 @@ class SortingLab {
 				break;
 			}
 		}
-		return a;
 	}
 
-	public static ArrayList<Integer> SelectionSort(ArrayList<Integer> a) {
+	public static void SelectionSort() {
 		for (int i=0; i < a.size(); i++) {
 			int min = a.get(i);
 			int minI = i;
@@ -38,10 +56,9 @@ class SortingLab {
 			a.set(i, min);
 			a.set(minI, temp);
 		}
-		return a;
 	}
 
-	public static ArrayList<Integer> InsertionSort(ArrayList<Integer> a) {
+	public static void InsertionSort() {
 
 		for (int i=0; i<a.size(); i++) {
 			// compare with the sorted elements.
@@ -59,28 +76,64 @@ class SortingLab {
 				}
 			}
 		}
-		return a;
+	}
+
+	public static int QuickSplit(int start, int stop) {
+		// pick the last element to be the pivot
+		int piv = a.get(stop);
+		int pos = start;
+
+		// loop through list to compare each element with pivot
+		for (int i = start; i < stop; i++) {
+			if (a.get(i) <= piv) {
+				// increase the pivots final position
+				pos = pos + 1;
+				// Swap the lower value to the left
+				int temp = a.get(pos - 1);
+				a.set(pos - 1, a.get(i));
+				a.set(i, temp);
+			}
+		}
+		// move the pivot to the right spot
+		int temp2 = a.get(pos);
+		a.set(pos, a.get(stop));
+		a.set(stop, temp2);
+
+		return pos;
+	}
+
+	public static void QuickSort(int start, int stop) {
+		// keep sorting if the starting index is less than the stopping index
+		if (start < stop) {
+			// 
+			int p = QuickSplit(start, stop);
+
+			// recursively call Quicksort on the lower half
+			// and upper half of the pivot
+			QuickSort(start, p-1);
+			QuickSort(p+1, stop);
+		}
+		// else the method doesn't do anything (it terminates recursion)
+	}
+
+	public static void MergeSort() {
+		return null;
 	}
 
 	public static void main(String[] args) {
-		
-		// Create an arraylist of n integers
-		// with random integers from 1 - n
-		ArrayList<Integer> a = new ArrayList<Integer>();
-		int n = 160000;
-		for (int i = 0; i < n; i++) {
-			int newNum = 1 + (int)(Math.random()*n);
-			a.add(newNum);
-		}
-		System.out.println(a);
+
+		SortingLab s = new SortingLab(20000);
+		int num = s.a.size();
+		int start_pos = 0;
+		int stop_pos = num;
 
 		// keep track of the time in nanoseconds
 		long start = System.nanoTime();
-		ArrayList<Integer> b = BubbleSort(a);
+		QuickSort(start_pos, stop_pos - 1);
 		long end = System.nanoTime();
 		long total = end - start;
 
-		System.out.println(b);
+		System.out.println(s.a);
 		
 		System.out.println("Sorted! Took " + total+ " nanoseconds");
 		
