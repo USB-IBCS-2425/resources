@@ -14,7 +14,7 @@ class SortingLab {
 		}
 	}
 
-	public void resetList() {
+	public static void resetList() {
 		for (int i = 0; i < n; i++) {
 			int newNum = 1 + (int)(Math.random()*n);
 			a.set(i, newNum);
@@ -116,20 +116,75 @@ class SortingLab {
 		// else the method doesn't do anything (it terminates recursion)
 	}
 
-	public static void MergeSort() {
-		return null;
+	public static void Merge(int start, int middle, int stop) {
+		
+		// i is the index of the left-hand side list
+		int i = start;
+		// j is the index of the right-hand side list
+		int j = middle + 1;
+		// k is the index of the current element
+		int k = 0;
+		// temporary array to hold the values so it does not overwrite
+		// we will merge onto a new array then replace
+		// all items in the arraylist with this temp array
+		int[] tempArr = new int[stop - start + 1];
+
+		while ((i <= middle) && (j <= stop)) {
+			if (a.get(i) <= a.get(j)) {
+				tempArr[k] = a.get(i);
+				i++;
+			}
+			else {
+				tempArr[k] = a.get(j);
+				j++;
+			}
+			k++;
+		}
+		// add all remaining elements from left or right
+		while (i <= middle) {
+			tempArr[k] = a.get(i);
+			i++;
+			k++;
+		}
+		while (j <= stop) {
+			tempArr[k] = a.get(j);
+			j++;
+			k++;
+		}
+		// add temporary array back into arraylist
+		for (i = start; i <= stop; i++) {
+			a.remove(i);
+			// insert element from temp array at position i
+			// i - start keeps track of the relative postion
+			// in temporary array
+			a.add(i, tempArr[i - start]);
+		}
+	}
+
+	public static void MergeSort(int start, int stop) {
+		if (start < stop) {
+			// similar to binary search, find median value.
+			int middle = (start + stop)/2;
+			// recursively call Merge sort on both halves
+			MergeSort(start, middle);
+			MergeSort(middle+1, stop);
+
+			// merge two halves together
+			Merge(start, middle, stop);
+		}
 	}
 
 	public static void main(String[] args) {
 
-		SortingLab s = new SortingLab(20000);
+		SortingLab s = new SortingLab(200000);
 		int num = s.a.size();
 		int start_pos = 0;
 		int stop_pos = num;
 
 		// keep track of the time in nanoseconds
 		long start = System.nanoTime();
-		QuickSort(start_pos, stop_pos - 1);
+		//QuickSort(start_pos, stop_pos-1);
+		MergeSort(start_pos, stop_pos - 1);
 		long end = System.nanoTime();
 		long total = end - start;
 
