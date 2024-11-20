@@ -153,11 +153,12 @@ class SortingLab {
 		}
 		// add temporary array back into arraylist
 		for (i = start; i <= stop; i++) {
-			a.remove(i);
+			a.set(i, tempArr[i-start]);
+			//a.remove(i);
 			// insert element from temp array at position i
 			// i - start keeps track of the relative postion
 			// in temporary array
-			a.add(i, tempArr[i - start]);
+			//a.add(i, tempArr[i - start]);
 		}
 	}
 
@@ -176,7 +177,7 @@ class SortingLab {
 
 	public static void main(String[] args) {
 
-		SortingLab s = new SortingLab(200000);
+		SortingLab s = new SortingLab(320000);
 		int num = s.a.size();
 		int start_pos = 0;
 		int stop_pos = num;
