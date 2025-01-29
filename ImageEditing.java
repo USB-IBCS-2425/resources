@@ -109,24 +109,32 @@ class ImageEditing {
          		pixelCol.setText("Color: " + myColor);
          	}
          	if (command.equals("CHANGE")) {
-         		int red = 255;
-         		int green = 0;
-         		int blue = 0;
-         		int col = (0 << 24) | (red << 16) | (green << 8) | blue;
          		int width = im.getWidth();
          		int height = im.getHeight();
          		for (int i = 0; i < width; i++) {
          			for (int j = 0; j < height; j++) {
+
+         				int rgb = im.getRGB(i,j);
+         				int r = (rgb & 0x00ff0000) >> 16;
+         				int g = (rgb & 0x0000ff00) >> 8;
+         				int b = rgb & 0x000000ff;
+         				r = r + 20;
+         				g = g + 20;
+         				b = b + 20;
+         				if (r > 255) {
+         					r = 255;
+         				}
+         				if (g > 255) {
+         					g = 255;
+         				}
+         				if (b > 255) {
+         					b = 255;
+         				}
+         				int col = (0xFF << 24) | (r << 16) | (g << 8) | b;
+
          				im.setRGB(i, j, col);
          			}
          		}
-         		try {
-         			File ofile = new File("myImage.png");
-         			ImageIO.write(im, "png", ofile);
-         		}
-         		catch(IOException o) {
-        				System.out.println("Error reading image: " + o.getMessage());
-        		}
          		
          		icon = new ImageIcon(im);
          		lab.setIcon(icon);
