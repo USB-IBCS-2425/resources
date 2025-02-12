@@ -1,0 +1,7 @@
+This is a sample text file. It is to
+show you all about
+how different texts are read.
+
+Have fun!
+
+-Mr. Considine
