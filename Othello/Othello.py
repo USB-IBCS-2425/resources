@@ -2,6 +2,7 @@ from graphics import*
 from OBoard import*
 from Cell import*
 from Button import*
+from OthelloAI import*
 
 def initialPieces(cb):
     
@@ -10,9 +11,11 @@ def initialPieces(cb):
     cb.cells[35].updatePiece("black")
     cb.cells[36].updatePiece("white")
 
+    
+
 def main():
 
-    win = GraphWin("Chess", 1000, 800)
+    win = GraphWin("Othello", 1000, 800)
     
     ob = OBoard(win)
     
@@ -41,8 +44,12 @@ def main():
     initialPieces(ob)
     
     while True:
+        turn = False
         turnT.setText(ob.whoMove + " plays")
         mov = ob.checkMoves()
+        if len(mov) == 0:
+            turnT.setText(ob.whoMove + " has no moves. game over")
+            break
         m1 = win.getMouse()
 
         if quiButton.isClicked(m1):
@@ -60,9 +67,20 @@ def main():
         for c in mov:
             if c.isClicked(m1):
                 ob.place(c)
+                turn = True
                 break
         for c in mov:
             c.unHighlight()
+
+        if turn:
+            AImov = ob.checkMoves()
+            if len(AImov) == 0:
+                turnT.setText(ob.whoMove + " has no moves. game over")
+                break
+            choice = ob.findBestMove(AImov)
+            ob.place(choice)
+            for m in AImov:
+                m.unHighlight()
         
                     
 

@@ -25,6 +25,12 @@ class OBoard():
     def getAllCells(self):
         return self.cells
 
+    def findBestMove(self, moves):
+
+        move = moves[0]
+        
+        return move
+
     def checkMoves(self):
         moves = []
         UL = [-1, -8]
@@ -41,24 +47,36 @@ class OBoard():
             if cell.piece != "":
                 if self.whoMove != cell.piece:
                     for d in directions:
-                        newInd = i + d[0] + d[1]
-                        if 0 <= newInd < 64:
-                            if self.cells[newInd].piece == "":
-                                checkForValid = False
-                                pos = i
-                                for j in range(6):
-                                    pos = pos - d[0] - d[1]
-                                    if (63 < pos):
-                                        break
-                                    elif (pos < 0):
-                                        break
-                                    elif self.cells[pos].piece == "":
-                                        break
-                                    elif self.cells[pos].piece == self.whoMove:
-                                        checkForValid = True
-                                        break
-                                if checkForValid:
-                                    moves.append(self.cells[newInd])
+                        if (i%8 != 0) or (d[0] == 0):
+                            if (i%8 != 7) or (d[0] == 0):
+                                newInd = i + d[0] + d[1]
+
+                                if 0 <= newInd < 64:
+                                    if self.cells[newInd].piece == "":
+                                        
+                                        checkForValid = False
+                                        pos = i
+                                        for j in range(6):
+                                            
+                                            pos = pos - d[0] - d[1]
+                                            
+                                            
+                                            if (63 < pos):
+                                                break
+                                            elif (pos < 0):
+                                                break
+                                            elif self.cells[pos].piece == "":
+                                                break
+                                            elif self.cells[pos].piece == self.whoMove:
+                                                checkForValid = True
+                                                
+                                                break
+                                            elif (pos%8 == 0) and (d[0] != 0):
+                                                break
+                                            elif (pos%8 == 7) and (d[1] != 0):
+                                                break
+                                        if checkForValid:
+                                            moves.append(self.cells[newInd])
         for m in moves:
             m.highlight()
 
@@ -81,6 +99,10 @@ class OBoard():
             newInd = ind + d[0] + d[1]
             tempFlip = []
             for i in range(7):
+                if (newInd%8 == 7) and (d[0] == -1):
+                    break
+                if (newInd%8 == 0) and (d[0] == 1):
+                    break
                 if 0 <= newInd < 64:
                     if (self.cells[newInd].piece != self.whoMove) and (self.cells[newInd].piece != ""):
                         tempFlip.append(newInd)
@@ -97,7 +119,7 @@ class OBoard():
         else:
             change = "black"
         for f in toFlip:
-            print(f)
+            #print(f)
             self.cells[f].updatePiece(self.whoMove)
         self.whoMove = change
         
